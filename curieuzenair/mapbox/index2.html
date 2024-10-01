@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Display Extruded GeoJSON Polygon on Mapbox</title>
+    <link href="https://api.mapbox.com/mapbox-gl-js/v3.6.0/mapbox-gl.css" rel="stylesheet">
+    <script src="https://api.mapbox.com/mapbox-gl-js/v3.6.0/mapbox-gl.js"></script>
+    <style>
+        body { margin: 0; padding: 0; }
+        #map { position: absolute; top: 0; bottom: 0; width: 100%; }
+    </style>
+</head>
+<body>
+    <div id="map"></div>
+    <script>
+        // Mapbox access token
+        mapboxgl.accessToken = 'pk.eyJ1IjoibXJjeW1lIiwiYSI6ImNsempzOGkzeTBzZXIycnMxOTZlZm5vN3gifQ.dWsRi-8JdvdDwSzlfbM6Pg';
+        
+        // Create a new map
+        const map = new mapboxgl.Map({
+            container: 'map',
+            style: 'mapbox://styles/mapbox/dark-v11',
+            center: [4.36812, 50.84578], // Center the map around the polygon
+            zoom: 11.02,
+            pitch: 45, // Adjust the pitch for a better view of the extrusion
+            bearing: 0,
+        });
+
+        // Function to get color based on NO2 value
+        function getColor(no2) {
+            return no2 > 50 ? '#000000' : // Black for > 50
+                   no2 > 40 ? '#FF0000' : // Red for 40-50
+                   no2 > 35 ? '#FF4500' : // Orange-Red for 35-40
+                   no2 > 30 ? '#FFA500' : // Orange for 30-35
+                   no2 > 25 ? '#FFD700' : // Yellow for 25-30
+                   no2 > 20 ? '#ADFF2F' : // Green-Yellow for 20-25
+                   no2 > 15 ? '#32CD32' : // Green for 15-20
+                   no2 > 10 ? '#00CED1' : // Dark Turquoise for 10-15
+                   no2 > 5  ? '#4682B4' : // Steel Blue for 5-10
+                              '#87CEFA';  // Light Blue for 0-5
+        }
+
+        // Load the GeoJSON data from the specified path
+        //fetch('no2_anmean_station_brussels_2021_mapbox.json')
+        fetch('no2_curieusenair_mapbox.json')
+            .then(response => response.json())
+            .then(geojsonData => {
+                // Load the map and add the GeoJSON data as a source and layer
+                map.on('load', () => {
+                    // Add the GeoJSON source
+                    map.addSource('geojson-polygon', {
+                        'type': 'geojson',
+                        'data': geojsonData
+                    });
+
+                    // Add an extruded layer to display the polygon
+                    map.addLayer({
+                        'id': 'polygon-extrusion',
+                        'type': 'fill-extrusion',
+                        'source': 'geojson-polygon',
+                        'layout': {},
+                        'paint': {
+                            'fill-extrusion-color': [
+                                'case',
+                                ['>=', ['get', 'no2'], 0],  // Check if value is non-negative
+                                [
+                                    'interpolate',
+                                    ['linear'],
+                                    ['get', 'no2'],
+                                    0, getColor(0),
+                                    5, getColor(5),
+                                    10, getColor(10),
+                                    15, getColor(15),
+                                    20, getColor(20),
+                                    25, getColor(25),
+                                    30, getColor(30),
+                                    35, getColor(35),
+                                    40, getColor(40),
+                                    50, getColor(50)
+                                ],
+                                '#FFFFFF' // Fallback color if value is negative or missing
+                            ],
+                            'fill-extrusion-height': [
+                                'case',
+                                ['>=', ['get', 'no2'], 0],  // Check if value is non-negative
+                                ['*', ['get', 'no2'], 20],  // Extrude by value * 10
+                                0  // If negative or missing, don't extrude
+                            ],
+                            'fill-extrusion-opacity': 0.6
+                        }
+                    });
+                });
+            })
+            .catch(error => {
+                console.error('Error loading the GeoJSON data:', error);
+            });
+    </script>
+</body>
+</html>

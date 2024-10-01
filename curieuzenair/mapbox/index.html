@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NO2 Concentration Map</title>
+    <script src='https://api.mapbox.com/mapbox-gl-js/v3.7.0/mapbox-gl.js'></script>
+    <link href='https://api.mapbox.com/mapbox-gl-js/v3.7.0/mapbox-gl.css' rel='stylesheet' />
+    <style>
+        body { margin: 0; padding: 0; }
+        #map { position: absolute; top: 0; bottom: 0; width: 100%; }
+        #controls {
+            display: flex;
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            background: white;
+            padding: 10px;
+            border-radius: 5px;
+        }
+        /* Toggle Switch */
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 60px;
+            height: 34px;
+            margin: 0 10px; /* Margin for spacing */
+        }
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            transition: .4s;
+            border-radius: 34px;
+        }
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 26px;
+            width: 26px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+        input:checked + .slider {
+            background-color: #2196F3;
+        }
+        input:checked + .slider:before {
+            transform: translateX(26px);
+        }
+        /* Label styles */
+        .label {
+            font-size: 16px;
+            margin: 0 10px;
+        }
+    </style>
+</head>
+<body>
+    <div id="map"></div>
+    <div id="controls">
+        <span class="label">Irceline data</span>
+        <label class="switch">
+            <input type="checkbox" id="toggleSwitch">
+            <span class="slider"></span>
+        </label>
+        <span class="label">CurieusenAir Data</span>
+    </div>
+
+    <script>
+        // Mapbox access token
+        mapboxgl.accessToken = 'pk.eyJ1IjoibXJjeW1lIiwiYSI6ImNsempzOGkzeTBzZXIycnMxOTZlZm5vN3gifQ.dWsRi-8JdvdDwSzlfbM6Pg';
+
+        // Create a new map
+        const map = new mapboxgl.Map({
+            container: 'map',
+            //style: 'mapbox://styles/mapbox/dark-v11',
+            //style: "mapbox://styles/mapbox/navigation-night-v1",
+            style : "mapbox://styles/mapbox/standard",
+            center: [4.36812, 50.84578], // Center the map around Brussels
+            zoom: 11.02,
+            pitch: 45, // Adjust the pitch for a better view of the extrusion
+            bearing: 0,
+        });
+        map.on('style.load', () => {
+            map.setConfigProperty('basemap', 'lightPreset', 'night');
+            map.setConfigProperty('basemap', 'showPointOfInterestLabels', false);
+            map.setConfigProperty('basemap', 'showRoadLabels', false);
+            });
+
+        let currentLayer = null; // To keep track of the current layer
+
+        // Function to get color based on NO2 value
+        function getColor(no2) {
+            return no2 > 50 ? '#000000' :
+                   no2 > 40 ? '#FF0000' :
+                   no2 > 35 ? '#FF4500' :
+                   no2 > 30 ? '#FFA500' :
+                   no2 > 25 ? '#FFD700' :
+                   no2 > 20 ? '#ADFF2F' :
+                   no2 > 15 ? '#32CD32' :
+                   no2 > 10 ? '#00CED1' :
+                   no2 > 5  ? '#4682B4' :
+                              '#87CEFA';
+        }
+
+        // Function to load GeoJSON data and add it to the map
+        function loadGeojson(url, layerId) {
+            fetch(url)
+                .then(response => response.json())
+                .then(geojsonData => {
+                    if (currentLayer) {
+                        map.removeLayer(currentLayer);
+                        map.removeSource(currentLayer);
+                    }
+
+                    // Add the GeoJSON source
+                    map.addSource(layerId, {
+                        'type': 'geojson',
+                        'data': geojsonData
+                    });
+
+                    // Add an extruded layer to display the polygon
+                    map.addLayer({
+                        id: layerId,
+                        type: 'fill-extrusion',
+                        source: layerId,
+                        layout: {},
+                        paint: {
+                            'fill-extrusion-color': [
+                                'case',
+                                ['>=', ['get', 'no2'], 0],
+                                [
+                                    'interpolate',
+                                    ['linear'],
+                                    ['get', 'no2'],
+                                    0, getColor(0),
+                                    5, getColor(5),
+                                    10, getColor(10),
+                                    15, getColor(15),
+                                    20, getColor(20),
+                                    25, getColor(25),
+                                    30, getColor(30),
+                                    35, getColor(35),
+                                    40, getColor(40),
+                                    50, getColor(50)
+                                ],
+                                '#FFFFFF'
+                            ],
+                            'fill-extrusion-height': [
+                                'case',
+                                ['>=', ['get', 'no2'], 0],
+                                ['*', ['get', 'no2'], 20],
+                                0
+                            ],
+                            'fill-extrusion-opacity': 0.7,
+                            'fill-extrusion-flood-light-intensity': 0, // Disable floodlight influence
+                            'fill-extrusion-emissive-strength': 1.0 // Maximize emissive strength to ensure the color is bright
+                        }
+                    });
+
+                    currentLayer = layerId; // Update currentLayer to the new layer
+                })
+                .catch(error => {
+                    console.error('Error loading the GeoJSON data:', error);
+                });
+        }
+
+        // Load the first GeoJSON (Irceline data) by default
+        loadGeojson('no2_anmean_station_brussels_2021_mapbox.json', 'irceline-data');
+
+        // Function to switch between the two GeoJSON datasets
+        document.getElementById('toggleSwitch').addEventListener('change', (event) => {
+            if (event.target.checked) {
+                loadGeojson('no2_curieusenair_mapbox.json', 'curieusenair-data');
+            } else {
+                loadGeojson('no2_anmean_station_brussels_2021_mapbox.json', 'irceline-data');
+            }
+        });
+    </script>
+</body>
+</html>
