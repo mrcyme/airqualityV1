@@ -9,12 +9,15 @@
 </head>
 <body>
     <h1>Sensor Map - Toggle PM2.5 / PM10</h1>
-    <div id="controls">
-        <button onclick="togglePM('P1')">Show PM10</button>
-        <button onclick="togglePM('P2')">Show PM2.5</button>
-        <button onclick="toggleDataSource()">Toggle Data Source</button>
-    </div>
     <div id="map"></div>
+    <div id="controls">
+        <span class="label">Irceline data</span>
+        <label class="switch">
+            <input type="checkbox" id="toggleSwitch" onclick="toggleDataSource()">
+            <span class="slider"></span>
+        </label>
+        <span class="label">Luchtpijp Data</span>
+    </div>
 
     <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
     <script src="app.js"></script>
