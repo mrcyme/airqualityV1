@@ -126,6 +126,13 @@ fetchSensorCommunityData();
      updateMarkers(type);
  }
 function toggleDataSource() {
+    // Clear existing markers
+    markers.forEach(sensor => {
+        if (sensor.marker) {
+            map.removeLayer(sensor.marker);
+        }
+    });
+
     if (currentDataSource === 'sensorCommunity') {
         currentDataSource = 'irceline';
         fetchIrcelineData();
