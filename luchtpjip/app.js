@@ -67,7 +67,6 @@ function fetchIrcelineData() {
                     };
                 }
             }).filter(Boolean);  // Remove undefined entries
-
             // Initially display PM2.5 markers
             updateMarkers('P2');
         })
