@@ -106,18 +106,36 @@ fetchSensorCommunityData();
          if (isNaN(value)) return;  // Skip markers without valid data
 
          let color = getColor(value);
-         let circleMarker = L.circleMarker([sensor.lat, sensor.lon], {
-             radius: 8,
-             fillColor: color,
-             color: "#000",
-             weight: 1,
-             opacity: 1,
-             fillOpacity: 0.8
-         }).addTo(map)
-           .bindPopup(`<strong>Sensor Location: ${sensor.lat}</strong><br>
-                       <strong>${type === 'P2' ? 'PM2.5' : 'PM10'} Value:</strong> ${value}`);
 
-         sensor.marker = circleMarker;
+         if (sensor.lat === 50.845813) {
+             // Create a star-shaped marker
+             let starIcon = L.divIcon({
+                 className: 'custom-star-icon',
+                 html: `<svg width="24" height="24" viewBox="0 0 24 24" fill="${color}" xmlns="http://www.w3.org/2000/svg">
+                           <path d="M12 2l3.09 6.26L22 9.27l-5 4.87L18.18 22 12 18.27 5.82 22 7 14.14l-5-4.87 6.91-1.01L12 2z"/>
+                        </svg>`,
+                 iconSize: [24, 24],
+                 iconAnchor: [12, 12]
+             });
+
+             sensor.marker = L.marker([sensor.lat, sensor.lon], { icon: starIcon }).addTo(map)
+                 .bindPopup(`<strong>Sensor Location: ${sensor.lat}</strong><br>
+                             <strong>${type === 'P2' ? 'PM2.5' : 'PM10'} Value:</strong> ${value}`);
+         } else {
+             // Create a circle marker
+             let circleMarker = L.circleMarker([sensor.lat, sensor.lon], {
+                 radius: 8,
+                 fillColor: color,
+                 color: "#000",
+                 weight: 1,
+                 opacity: 1,
+                 fillOpacity: 0.8
+             }).addTo(map)
+               .bindPopup(`<strong>Sensor Location: ${sensor.lat}</strong><br>
+                           <strong>${type === 'P2' ? 'PM2.5' : 'PM10'} Value:</strong> ${value}`);
+
+             sensor.marker = circleMarker;
+         }
      });
  }
 
