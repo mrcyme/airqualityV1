@@ -17,6 +17,14 @@
         </label>
         <span class="label">Irceline data</span>
     </div>
+    <div id="pm-controls">
+        <span class="label">PM2.5</span>
+        <label class="switch">
+            <input type="checkbox" id="pmToggleSwitch" onclick="togglePM(this.checked ? 'P1' : 'P2')">
+            <span class="slider"></span>
+        </label>
+        <span class="label">PM10</span>
+    </div>
 
     <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
     <script src="app.js"></script>
