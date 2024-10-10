@@ -10,37 +10,72 @@
 
  // Store the markers for both PM10 and PM2.5
  let markers = [];
- let currentType = 'P2';  // Default to PM2.5
+let currentType = 'P2';  // Default to PM2.5
+let currentDataSource = 'sensorCommunity';  // Default data source
 
- // Fetch sensor data from the API
- fetch('https://maps.sensor.community/data/v2/data.dust.min.json')
-     .then(response => response.json())
-     .then(data => {
-         markers = data.map(sensor => {
-             const lat = parseFloat(sensor.location.latitude);
-             const lon = parseFloat(sensor.location.longitude);
-             const country = sensor.location.country;
+function fetchSensorCommunityData() {
+    fetch('https://maps.sensor.community/data/v2/data.dust.min.json')
+        .then(response => response.json())
+        .then(data => {
+            markers = data.map(sensor => {
+                const lat = parseFloat(sensor.location.latitude);
+                const lon = parseFloat(sensor.location.longitude);
+                const country = sensor.location.country;
 
-             // Filter for sensors in Brussels (rough coordinates)
-             if (country === 'BE' && lat > 50.80 && lat < 50.90 && lon > 4.25 && lon < 4.45) {
-                 const P1 = sensor.sensordatavalues.find(val => val.value_type === "P1")?.value || 'N/A';
-                 const P2 = sensor.sensordatavalues.find(val => val.value_type === "P2")?.value || 'N/A';
-                 
-                 // Return a marker with both PM10 and PM2.5 data
-                 return {
-                     lat,
-                     lon,
-                     P1: parseFloat(P1),
-                     P2: parseFloat(P2),
-                     marker: null
-                 };
-             }
-         }).filter(Boolean);  // Remove undefined entries
+                // Filter for sensors in Brussels (rough coordinates)
+                if (country === 'BE' && lat > 50.80 && lat < 50.90 && lon > 4.25 && lon < 4.45) {
+                    const P1 = sensor.sensordatavalues.find(val => val.value_type === "P1")?.value || 'N/A';
+                    const P2 = sensor.sensordatavalues.find(val => val.value_type === "P2")?.value || 'N/A';
+                    
+                    // Return a marker with both PM10 and PM2.5 data
+                    return {
+                        lat,
+                        lon,
+                        P1: parseFloat(P1),
+                        P2: parseFloat(P2),
+                        marker: null
+                    };
+                }
+            }).filter(Boolean);  // Remove undefined entries
 
-         // Initially display PM2.5 markers
-         updateMarkers('P2');
-     })
-     .catch(error => console.error('Error fetching sensor data:', error));
+            // Initially display PM2.5 markers
+            updateMarkers('P2');
+        })
+        .catch(error => console.error('Error fetching sensor data:', error));
+}
+
+function fetchIrcelineData() {
+    const pm25Url = 'https://geo.irceline.be/sos/api/v1/timeseries/?service=1&phenomenon=6001&expanded=true&force_latest_values=true&status_intervals=true&rendering_hints=true&locale=en';
+    const pm10Url = 'https://geo.irceline.be/sos/api/v1/timeseries/?service=1&phenomenon=5&expanded=true&force_latest_values=true&status_intervals=true&rendering_hints=true&locale=en';
+
+    Promise.all([fetch(pm25Url), fetch(pm10Url)])
+        .then(responses => Promise.all(responses.map(res => res.json())))
+        .then(([pm25Data, pm10Data]) => {
+            markers = [...pm25Data, ...pm10Data].map(sensor => {
+                const lat = sensor.station.geometry.coordinates[1];
+                const lon = sensor.station.geometry.coordinates[0];
+                const value = sensor.lastValue.value;
+                const type = sensor.parameters.phenomenon.label.includes('10') ? 'P1' : 'P2';
+
+                // Filter for sensors in Brussels (rough coordinates)
+                if (lat > 50.80 && lat < 50.90 && lon > 4.25 && lon < 4.45) {
+                    return {
+                        lat,
+                        lon,
+                        [type]: value,
+                        marker: null
+                    };
+                }
+            }).filter(Boolean);  // Remove undefined entries
+
+            // Initially display PM2.5 markers
+            updateMarkers('P2');
+        })
+        .catch(error => console.error('Error fetching Irceline data:', error));
+}
+
+// Initially fetch data from the default data source
+fetchSensorCommunityData();
 
  // Function to determine color based on sensor value using the provided scale
  function getColor(value) {
@@ -91,3 +126,12 @@
      currentType = type;
      updateMarkers(type);
  }
+function toggleDataSource() {
+    if (currentDataSource === 'sensorCommunity') {
+        currentDataSource = 'irceline';
+        fetchIrcelineData();
+    } else {
+        currentDataSource = 'sensorCommunity';
+        fetchSensorCommunityData();
+    }
+}
