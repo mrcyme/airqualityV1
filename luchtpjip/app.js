@@ -18,6 +18,7 @@ function fetchSensorCommunityData() {
         .then(response => response.json())
         .then(data => {
             markers = data.map(sensor => {
+                
                 const lat = parseFloat(sensor.location.latitude);
                 const lon = parseFloat(sensor.location.longitude);
                 const country = sensor.location.country;
@@ -113,7 +114,7 @@ fetchSensorCommunityData();
              opacity: 1,
              fillOpacity: 0.8
          }).addTo(map)
-           .bindPopup(`<strong>Sensor Location:</strong><br>
+           .bindPopup(`<strong>Sensor Location: ${sensor.lat}</strong><br>
                        <strong>${type === 'P2' ? 'PM2.5' : 'PM10'} Value:</strong> ${value}`);
 
          sensor.marker = circleMarker;
