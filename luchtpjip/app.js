@@ -139,11 +139,15 @@ fetchSensorCommunityData();
      });
  }
 
- // Function to toggle between PM10 and PM2.5
- function togglePM(type) {
-     currentType = type;
-     updateMarkers(type);
- }
+function togglePM(type) {
+    if (type === 'P2') {
+        document.getElementById('pm10Checkbox').checked = false;
+    } else {
+        document.getElementById('pm25Checkbox').checked = false;
+    }
+    currentType = type;
+    updateMarkers(type);
+}
 function toggleDataSource() {
     // Clear existing markers
     markers.forEach(sensor => {
