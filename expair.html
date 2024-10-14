@@ -16,7 +16,7 @@
             <input type="checkbox" id="toggleSwitch">
             <span class="slider"></span>
         </label>
-        <span class="label">CurieusenAir Data</span>
+        <span class="label">ExpAir Data</span>
     </div>
 
     <div id="pm-controls">
@@ -43,16 +43,13 @@
     <script>
         document.getElementById('toggleSwitch').addEventListener('change', () => {
         const selectedNorm = document.querySelector('input[name="norm"]:checked').value; // Get the current norm
-        toggleDataAndNorm("curieusenair", selectedNorm); // Pass the selected norm
+        toggleDataAndNorm("expair", selectedNorm); // Pass the selected norm
     });
         document.querySelectorAll('input[name="norm"]').forEach((checkbox) => {
         checkbox.addEventListener('change',() => {
         const selectedNorm = document.querySelector('input[name="norm"]:checked').value; // Get the current norm
-        toggleDataAndNorm("curieusenair", selectedNorm);
+        toggleDataAndNorm("expair", selectedNorm);
         })
     });
     </script>
 </body>
-
-
-

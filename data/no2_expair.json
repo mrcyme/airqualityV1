@@ -1,0 +1,366 @@
+{
+    "type": "FeatureCollection",
+    "features": [
+      {
+        "type": "Feature",
+        "properties": {
+          "site": "Rue de Flandre, 197",
+          "no2": 45.5,
+          "soort_straat": "As",
+          "verkeer": "+++",
+          "buurt": "gemengd",
+          "socio_economisch": "gemengd"
+        },
+        "geometry": {
+          "type": "Point",
+          "coordinates": [4.342010, 50.853270]
+        }
+      },
+      {
+        "type": "Feature",
+        "properties": {
+          "site": "Rue Piers, 109",
+          "no2": 46,
+          "soort_straat": "Street canyon",
+          "verkeer": "++",
+          "buurt": "residentieel",
+          "socio_economisch": "laag"
+        },
+        "geometry": {
+          "type": "Point",
+          "coordinates": [4.337940, 50.858660]
+        }
+      },
+      {
+        "type": "Feature",
+        "properties": {
+          "site": "Bergensesteenweg, 15",
+          "no2": 36.1,
+          "soort_straat": "As",
+          "verkeer": "++",
+          "buurt": "residentieel",
+          "socio_economisch": "laag"
+        },
+        "geometry": {
+          "type": "Point",
+          "coordinates": [4.337470, 50.844600]
+        }
+      },
+      {
+        "type": "Feature",
+        "properties": {
+          "site": "Rue d'Arenberg, 12",
+          "no2": 36.1,
+          "soort_straat": "Street canyon",
+          "verkeer": "+",
+          "buurt": "kantoren",
+          "socio_economisch": "hoog"
+        },
+        "geometry": {
+          "type": "Point",
+          "coordinates": [4.356460, 50.848390]
+        }
+      },
+      {
+        "type": "Feature",
+        "properties": {
+          "site": "Avenue de la Toison d'Or, 72",
+          "no2": 50.5,
+          "soort_straat": "As",
+          "verkeer": "+++",
+          "buurt": "winkels",
+          "socio_economisch": "hoog"
+        },
+        "geometry": {
+          "type": "Point",
+          "coordinates": [4.3528603, 50.8343495]
+        }
+      },
+      {
+        "type": "Feature",
+        "properties": {
+          "site": "Rue Joseph II, 54",
+          "no2": 28.4,
+          "soort_straat": "Street canyon",
+          "verkeer": "++",
+          "buurt": "kantoren",
+          "socio_economisch": "hoog"
+        },
+        "geometry": {
+          "type": "Point",
+          "coordinates": [4.374232292175293, 50.84537887573242]
+        }
+      },
+      {
+        "type": "Feature",
+        "properties": {
+          "site": "Avenue Jacques Sermon, 35",
+          "no2": 34.9,
+          "soort_straat": "As",
+          "verkeer": "++",
+          "buurt": "residentieel",
+          "socio_economisch": "hoog"
+        },
+        "geometry": {
+          "type": "Point",
+          "coordinates": [4.3215984, 50.8683695]
+        }
+      },
+      {
+        "type": "Feature",
+        "properties": {
+          "site": "Chaussée de Vleurgat, 1",
+          "no2": 33,
+          "soort_straat": "Street canyon",
+          "verkeer": "+",
+          "buurt": "residentieel",
+          "socio_economisch": "hoog"
+        },
+        "geometry": {
+          "type": "Point",
+          "coordinates": [4.3711287, 50.8276692]
+        }
+      },
+      {
+        "type": "Feature",
+        "properties": {
+          "site": "Rue du Méridien, 36",
+          "no2": 30.9,
+          "soort_straat": "Street canyon",
+          "verkeer": "++",
+          "buurt": "residentieel",
+          "socio_economisch": "laag"
+        },
+        "geometry": {
+          "type": "Point",
+          "coordinates": [4.3691497, 50.8540727]
+        }
+      },
+      {
+        "type": "Feature",
+        "properties": {
+          "site": "Rue Henri-Joseph Genesse, 1",
+          "no2": 29.3,
+          "soort_straat": "As",
+          "verkeer": "+++",
+          "buurt": "zoning",
+          "socio_economisch": "laag"
+        },
+        "geometry": {
+          "type": "Point",
+          "coordinates": [4.311000347137451, 50.82258987426758]
+        }
+      },
+      {
+        "type": "Feature",
+        "properties": {
+          "site": "Avenue Brugmann, 537",
+          "no2": 22.3,
+          "soort_straat": "As",
+          "verkeer": "+++",
+          "buurt": "residentieel",
+          "socio_economisch": "laag"
+        },
+        "geometry": {
+          "type": "Point",
+          "coordinates": [4.3404843, 50.8023888]
+        }
+      },
+      {
+        "type": "Feature",
+        "properties": {
+          "site": "Chaussée de Waterloo, 200",
+          "no2": 36.4,
+          "soort_straat": "As",
+          "verkeer": "+++",
+          "buurt": "residentieel",
+          "socio_economisch": "laag"
+        },
+        "geometry": {
+          "type": "Point",
+          "coordinates": [4.34872579574585, 50.825035095214844]
+        }
+      },
+      {
+        "type": "Feature",
+        "properties": {
+          "site": "Avenue Fonsny, 48",
+          "no2": 30.7,
+          "soort_straat": "As",
+          "verkeer": "+++",
+          "buurt": "kantoren",
+          "socio_economisch": "laag"
+        },
+        "geometry": {
+          "type": "Point",
+          "coordinates": [4.336388, 50.8347908]
+        }
+      },
+      {
+        "type": "Feature",
+        "properties": {
+          "site": "Mettewielaan, 332",
+          "no2": 30.6,
+          "soort_straat": "As",
+          "verkeer": "+++",
+          "buurt": "residentieel",
+          "socio_economisch": "gemengd"
+        },
+        "geometry": {
+          "type": "Point",
+          "coordinates": [4.2994171, 50.8474293]
+        }
+      },
+      {
+        "type": "Feature",
+        "properties": {
+          "site": "Rue de Brabant, 268",
+          "no2": 34.4,
+          "soort_straat": "Street canyon",
+          "verkeer": "++",
+          "buurt": "winkels",
+          "socio_economisch": "laag"
+        },
+        "geometry": {
+          "type": "Point",
+          "coordinates": [4.3662215, 50.8634835]
+        }
+      },
+      {
+        "type": "Feature",
+        "properties": {
+          "site": "Boulevard Lambermont, 66",
+          "no2": 34.8,
+          "soort_straat": "As",
+          "verkeer": "+++",
+          "buurt": "residentieel",
+          "socio_economisch": "hoog"
+        },
+        "geometry": {
+          "type": "Point",
+          "coordinates": [4.379753589630127, 50.87236785888672]
+        }
+      },
+      {
+        "type": "Feature",
+        "properties": {
+          "site": "Avenue de Cortenbergh, 12",
+          "no2": 30.8,
+          "soort_straat": "As",
+          "verkeer": "+++",
+          "buurt": "kantoren",
+          "socio_economisch": "hoog"
+        },
+        "geometry": {
+          "type": "Point",
+          "coordinates": [4.385434627532959, 50.84305191040039]
+        }
+      },
+      {
+        "type": "Feature",
+        "properties": {
+          "site": "Boulevard Brand Whitlock, 24",
+          "no2": 28.9,
+          "soort_straat": "As",
+          "verkeer": "+++",
+          "buurt": "gemengd",
+          "socio_economisch": "hoog"
+        },
+        "geometry": {
+          "type": "Point",
+          "coordinates": [4.4085193, 50.839307]
+        }
+      },
+      {
+        "type": "Feature",
+        "properties": {
+          "site": "Boulevard Géneral Jacques, 225",
+          "no2": 26.6,
+          "soort_straat": "As",
+          "verkeer": "+++",
+          "buurt": "gemengd",
+          "socio_economisch": "hoog"
+        },
+        "geometry": {
+          "type": "Point",
+          "coordinates": [4.393557, 50.82442]
+        }
+      },
+      {
+        "type": "Feature",
+        "properties": {
+          "site": "Chaussée de Wavre, 178",
+          "no2": 24.7,
+          "soort_straat": "As",
+          "verkeer": "++",
+          "buurt": "gemengd",
+          "socio_economisch": "laag"
+        },
+        "geometry": {
+          "type": "Point",
+          "coordinates": [4.369948, 50.8357438]
+        }
+      },
+      {
+        "type": "Feature",
+        "properties": {
+          "site": "Rue Dieudonné Lefèvre, 41",
+          "no2": 21,
+          "soort_straat": "Street canyon",
+          "verkeer": "++",
+          "buurt": "gemengd",
+          "socio_economisch": "gemengd"
+        },
+        "geometry": {
+          "type": "Point",
+          "coordinates": [4.3489672, 50.8716538]
+        }
+      },
+      {
+        "type": "Feature",
+        "properties": {
+          "site": "Square Sainctelette, 3",
+          "no2": 39.5,
+          "soort_straat": "As",
+          "verkeer": "+++",
+          "buurt": "gemengd",
+          "socio_economisch": "hoog"
+        },
+        "geometry": {
+          "type": "Point",
+          "coordinates": [4.3480702, 50.8578573]
+        }
+      },
+      {
+        "type": "Feature",
+        "properties": {
+          "site": "Avenue des Dauphinelles, 1",
+          "no2": 20.8,
+          "soort_straat": "As",
+          "verkeer": "+++",
+          "buurt": "zoning",
+          "socio_economisch": "laag"
+        },
+        "geometry": {
+          "type": "Point",
+          "coordinates": [4.2861211, 50.8153706]
+        }
+      },
+      {
+        "type": "Feature",
+        "properties": {
+          "site": "Rue Antoine Dansaert, 30",
+          "no2": 29.7,
+          "soort_straat": "As",
+          "verkeer": "++",
+          "buurt": "winkels",
+          "socio_economisch": "gemengd"
+        },
+        "geometry": {
+          "type": "Point",
+          "coordinates": [4.347034, 50.849379]
+        }
+      }
+    ]
+  }
+  

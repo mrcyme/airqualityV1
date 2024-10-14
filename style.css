@@ -1,6 +1,6 @@
 #map {
     height: 90vh;
-    width: 80%;
+    width: 85%;
 }
 #controls {
     display: flex;
@@ -71,4 +71,28 @@ input:checked + .slider:before {
 .label {
     font-size: 16px;
     margin: 0 10px;
+}
+
+/* Add this CSS to your stylesheet */
+.info.legend {
+    background: white;
+    padding: 20px 10px;
+    font: 15px/16px Arial, Helvetica, sans-serif;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+    border-radius: 5px;
+}
+
+.info.legend i {
+    width: 40px;
+    height: 16px;
+    float: left;
+    margin-right: 8px;
+    opacity: 0.7;
+}
+
+
+/* Custom style for the popup */
+.leaflet-popup-content {
+    font-size: 14px;
+    color: #333;
 }

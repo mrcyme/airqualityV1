@@ -9,7 +9,7 @@
     <style>
         #map {
             height: 90vh;
-            width: 100%;
+            width: 80%;
         }
         #controls {
             display: flex;
@@ -91,7 +91,7 @@
         }).addTo(map);
 
         // Color scale based on NO2 concentration
-        function getColor(no2) {
+        function getColorNO2(no2) {
             return no2 > 50 ? '#000000' : // Black for > 50
                    no2 > 40 ? '#FF0000' : // Red for 40-50
                    no2 > 35 ? '#FF4500' : // Orange-Red for 35-40
@@ -120,8 +120,8 @@
 
                 // Set the circle style dynamically based on NO2 concentration
                 layer.setStyle({
-                    fillColor: getColor(no2),
-                    color: getColor(no2),
+                    fillColor: getColorNO2(no2),
+                    color: getColorNO2(no2),
                     radius: 6, // Adjust circle marker size
                     fillOpacity: 0.8
                 });

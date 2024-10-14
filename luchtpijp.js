@@ -9,9 +9,82 @@
  }).addTo(map);
 
  // Store the markers for both PM10 and PM2.5
- let markers = [];
+let markers = [];
 let currentType = 'P2';  // Default to PM2.5
 let currentDataSource = 'sensorCommunity';  // Default data source
+
+
+// Function to determine color based on sensor value using the provided scale
+function getColor(value, currentType) {
+    if (currentType === 'P2') {
+    return value > 75 ? '#990099' :  // Black for > 50
+           value > 60 ? '#CC0000' :  // Red for 40-50
+           value > 50 ? '#FF0000' :  // Orange-Red for 35-40
+           value > 35 ? '#FF6600' :  // Orange for 30-35
+           value > 20 ? '#FFBB00' :  // Yellow for 25-30
+           value > 15 ? '#FFFF00' :  // Green-Yellow for 20-25
+           value > 10 ? '#00FF00' :  // Green for 15-20
+           value > 7.5 ? '#009900' :  // Dark Turquoise for 10-15
+           value > 3.5  ? '#0099FF' :  // Steel Blue for 5-10
+                        '#0000FF';   // Light Blue for 0-5
+
+}
+else {
+    return value > 140 ? '#990099' :  // Black for > 50
+           value > 110 ? '#CC0000' :  // Red for 40-50
+           value > 95 ? '#FF0000' :  // Orange-Red for 35-40
+           value > 80 ? '#FF6600' :  // Orange for 30-35
+           value > 60 ? '#FFBB00' :  // Yellow for 25-30
+           value > 45 ? '#FFFF00' :  // Green-Yellow for 20-25
+           value > 35 ? '#00FF00' :  // Green for 15-20
+           value > 20 ? '#009900' :  // Dark Turquoise for 10-15
+           value > 10  ? '#0099FF' :  // Steel Blue for 5-10
+                        '#0000FF';   // Light Blue for 0-5
+}
+}
+
+
+function setLegend(currentType) {
+    if (map.legendControl) {
+        map.removeControl(map.legendControl);
+    }
+    const legend = L.control({ position: 'bottomright' });
+    legend.onAdd = function (map) {
+    
+    const div = L.DomUtil.create('div', 'info legend');
+    if (currentType === 'P2') {
+    const grades = [0, 3.5, 7.5, 10, 15, 20, 35, 50, 60, 75];
+    let labels = [];
+
+        // Loop through the intervals and generate a label with a colored square for each interval
+        for (let i = 0; i < grades.length; i++) {
+            div.innerHTML +=
+                '<i style="background:' + getColor(grades[i] + 1, currentType) + '"></i> ' +
+                grades[i] + (grades[i + 1] ? '&ndash;' + grades[i + 1] + ' µg/m³<br>' : '+ µg/m³');
+        }
+
+        return div;
+        }
+    else {
+        const grades = [0, 10, 20, 35, 40, 65, 80, 95, 110, 140];
+        let labels = [];
+    
+            // Loop through the intervals and generate a label with a colored square for each interval
+            for (let i = 0; i < grades.length; i++) {
+                div.innerHTML +=
+                    '<i style="background:' + getColor(grades[i] + 1, currentType) + '"></i> ' +
+                    grades[i] + (grades[i + 1] ? '&ndash;' + grades[i + 1] + ' µg/m³<br>' : '+ µg/m³');
+            }
+    
+            return div;
+            }
+    };
+        
+    legend.addTo(map);
+    map.legendControl = legend;
+}
+
+        
 
 function fetchSensorCommunityData() {
     fetch('https://maps.sensor.community/data/v2/data.dust.min.json')
@@ -77,19 +150,7 @@ function fetchIrcelineData() {
 // Initially fetch data from the default data source
 fetchSensorCommunityData();
 
- // Function to determine color based on sensor value using the provided scale
- function getColor(value) {
-     return value > 50 ? '#000000' :  // Black for > 50
-            value > 40 ? '#FF0000' :  // Red for 40-50
-            value > 35 ? '#FF4500' :  // Orange-Red for 35-40
-            value > 30 ? '#FFA500' :  // Orange for 30-35
-            value > 25 ? '#FFD700' :  // Yellow for 25-30
-            value > 20 ? '#ADFF2F' :  // Green-Yellow for 20-25
-            value > 15 ? '#32CD32' :  // Green for 15-20
-            value > 10 ? '#00CED1' :  // Dark Turquoise for 10-15
-            value > 5  ? '#4682B4' :  // Steel Blue for 5-10
-                         '#87CEFA';   // Light Blue for 0-5
- }
+
 
  // Function to update markers based on the selected type (PM10 or PM2.5)
  function updateMarkers(type) {
@@ -104,8 +165,7 @@ fetchSensorCommunityData();
      markers.forEach(sensor => {
          let value = sensor[type];
          if (isNaN(value)) return;  // Skip markers without valid data
-
-         let color = getColor(value);
+        let color = getColor(value, currentType);
 
          if (sensor.lat === 50.845813) {
              // Create a star-shaped marker
@@ -124,9 +184,9 @@ fetchSensorCommunityData();
          } else {
              // Create a circle marker
              let circleMarker = L.circleMarker([sensor.lat, sensor.lon], {
-                 radius: 8,
+                 radius: 4,
                  fillColor: color,
-                 color: "#000",
+                 color: color,
                  weight: 1,
                  opacity: 1,
                  fillOpacity: 0.8
@@ -146,7 +206,8 @@ function togglePM(type) {
         document.getElementById('pm25Checkbox').checked = false;
     }
     currentType = type;
-    updateMarkers(type);
+    updateMarkers(currentType);
+    setLegend(currentType);
 }
 function toggleDataSource() {
     // Clear existing markers
@@ -164,3 +225,5 @@ function toggleDataSource() {
         fetchSensorCommunityData();
     }
 }
+
+setLegend(currentType);
