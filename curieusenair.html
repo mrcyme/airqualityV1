@@ -38,6 +38,12 @@
         </label>
        
     </div>
+    <div id="explanation">
+        <p>
+            The curieusenair data have been collected during the year 2021 during one mounth by bruxelles environmenet ?. There are compared here with the Irceline data collected in 2021.
+            You can compare both data against different norms/recommandatation. The current european one, the future one that will likely be adopted in 2025 and the world health organization one.
+        </p>
+    </div>
     <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
     <script src="curieusenair.js"></script>
     <script>
@@ -51,6 +57,14 @@
         toggleDataAndNorm("curieusenair", selectedNorm);
         })
     });
+        // Load the first GeoJSON by default
+    loadIrcelineData("curieusenair").then(layer => {
+        layer.addTo(map);
+        currentLayer = layer;
+        setLegend("no_norm");
+    });
+
+
     </script>
 </body>
 

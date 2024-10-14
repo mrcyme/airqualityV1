@@ -36,7 +36,12 @@
             <input type="radio" name="norm"  value="world_health">
             World health
         </label>
-       
+    </div>
+    <div id="explanation">
+        <p>
+            The expair data have been collected during the full year 2023 by Bral. There are compared here with the Irceline data collected in 2023.
+            You can compare both data against different norms/recommandatation. The current european one, the future one that will likely be adopted in 2025 and the world health organization one.
+        </p>
     </div>
     <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
     <script src="curieusenair.js"></script>
@@ -50,6 +55,12 @@
         const selectedNorm = document.querySelector('input[name="norm"]:checked').value; // Get the current norm
         toggleDataAndNorm("expair", selectedNorm);
         })
+    });
+        // Load the first GeoJSON by default
+        loadIrcelineData("expair").then(layer => {
+        layer.addTo(map);
+        currentLayer = layer;
+        setLegend("no_norm");
     });
     </script>
 </body>

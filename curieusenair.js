@@ -147,8 +147,14 @@ function pointToLayer(feature, latlng) {
 }
 
 // Load the first GeoJSON (2021 data)
-function loadFirstGeojson() {
-    return fetch('data/no2_anmean_station_brussels.json')
+function loadIrcelineData(air) {
+    let path;
+    if (air === 'curieusenair') {
+        path = 'data/no2_anmean_station_brussels2021.json';
+    } else {
+        path = 'data/no2_expair.json';
+    }
+    return fetch('data/no2_anmean_station_brussels2023.json')
         .then(response => response.json())
         .then(geojsonData => {
             firstGeojsonLayer = L.geoJSON(geojsonData, {
@@ -202,7 +208,7 @@ function toggleDataAndNorm(air, norm) {
     }
 
     // Determine which GeoJSON to load based on the toggle switch
-    const loadGeojson = document.getElementById('toggleSwitch').checked ? loadSecondGeojson(air) : loadFirstGeojson();
+    const loadGeojson = document.getElementById('toggleSwitch').checked ? loadSecondGeojson(air) : loadIrcelineData(air);
 
     // Load the selected GeoJSON and update the map
     loadGeojson.then(layer => {
@@ -215,12 +221,5 @@ function toggleDataAndNorm(air, norm) {
 
 // Function to handle checkbox selection
 
-
-// Load the first GeoJSON by default
-loadFirstGeojson().then(layer => {
-    layer.addTo(map);
-    currentLayer = layer;
-    setLegend("no_norm");
-});
 
 
