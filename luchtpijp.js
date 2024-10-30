@@ -1,13 +1,37 @@
- // Initialize map centered on Brussels
- const map = L.map('map').setView([50.85, 4.35], 12);
+// Initialize map centered on Brussels
+const map = L.map('map').setView([50.85, 4.35], 12);
 
- // Add OpenStreetMap tiles
- L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
-     attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>',
-     subdomains: 'abcd',
-     maxZoom: 19
- }).addTo(map);
+// Add OpenStreetMap tiles
+L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
+    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>',
+    subdomains: 'abcd',
+    maxZoom: 19
+}).addTo(map);
 
+// Load the Brussels region GeoJSON file
+fetch('data/brussels_boundary.geojson')
+.then(response => response.json())
+.then(data => {
+    // Extract the geometry from the first feature in the FeatureCollection
+    const brusselsRegion = data.features[0].geometry;
+
+    // Define a larger bounding box around Brussels
+    const largeArea = turf.bboxPolygon([0, 45, 30, 65]); // Adjust as necessary
+
+    // Create a mask by calculating the difference
+    const mask = turf.difference(largeArea, brusselsRegion);
+
+    // Add the mask layer to the map
+    L.geoJSON(mask, {
+        style: {
+            color: '#0000ff',  // Blue color for the mask
+            fillColor: '#0000ff',
+            fillOpacity: 1,
+            stroke: false
+        }
+    }).addTo(map);
+})
+.catch(error => console.error('Error loading GeoJSON:', error));
  // Store the markers for both PM10 and PM2.5
 let markers = [];
 let currentType = 'P2';  // Default to PM2.5
